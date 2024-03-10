@@ -48,7 +48,13 @@ def label_smoothed_nll_loss(lprobs, target, epsilon, ignore_index=-100):
 class MultitaskBartFinetuner(pl.LightningModule):
     def __init__(self, hparams, get_dataset):
         super().__init__()
-        self.hparams = hparams
+        print(hparams)
+        print("hparams")
+        self.save_hyperparameters(hparams)
+        #self.hparams = hparams
+        #for key in hparams:
+        # self.hparams[key]=hparams[key]
+
         self.get_dataset = get_dataset
 
         self.model = BartForMultitaskLearning.from_pretrained(
@@ -57,7 +63,10 @@ class MultitaskBartFinetuner(pl.LightningModule):
         self.tokenizer = BartTokenizer.from_pretrained(
             hparams.tokenizer_name_or_path
         )
-
+        print("hparams")
+        print(self.hparams)
+        print(self.hparams.tasks)
+        print("hparams")
         self.tasks = self.hparams.tasks.split(",")
 
         # for loss weighting

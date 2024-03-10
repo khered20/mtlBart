@@ -28,8 +28,8 @@ def main():
     os.mkdir(args.output_dir)
 
     checkpoint_callback = pl.callbacks.ModelCheckpoint(
-        filepath=args.output_dir,
-        prefix='checkpoint',
+        dirpath=args.output_dir,
+        #prefix='checkpoint',
         monitor='val_loss',
         mode='min',
         save_last=True,
@@ -38,13 +38,17 @@ def main():
 
     train_params = dict(
         accumulate_grad_batches=args.gradient_accumulation_steps,
-        gpus=args.n_gpu,
+        #gpus=args.n_gpu,
+        accelerator="auto",
         max_epochs=args.num_train_epochs,
-        early_stop_callback=False,
+        #early_stop_callback=False,
+        #EarlyStopping
         precision=16 if args.fp_16 else 32,
-        amp_level=args.opt_level,
+        #amp_level=args.opt_level,
         gradient_clip_val=args.max_grad_norm,
-        checkpoint_callback=checkpoint_callback,
+        #checkpoint_callback=checkpoint_callback,
+        #callbacks=[early_stopping_callback, checkpoint_callback],
+        #callbacks=[checkpoint_callback],
         callbacks=[LoggingCallback()],
     )
 
