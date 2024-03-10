@@ -87,7 +87,7 @@ class BartForMultitaskLearning(PretrainedBartModel):
             decoder_input_ids=decoder_input_ids,
             encoder_outputs=encoder_outputs,
             decoder_attention_mask=decoder_attention_mask,
-            decoder_cached_states=decoder_cached_states,
+            #decoder_cached_states=decoder_cached_states,
             use_cache=use_cache,
             output_attentions=output_attentions,
             output_hidden_states=output_hidden_states

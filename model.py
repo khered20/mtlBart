@@ -7,7 +7,8 @@ import torch
 from torch.utils.data import DataLoader
 import pytorch_lightning as pl
 from transformers import AdamW, BartTokenizer, get_linear_schedule_with_warmup
-from transformers.models.bart.modeling_bart import shift_tokens_right
+from transformers.models.mbart.modeling_mbart import shift_tokens_right
+
 
 from multitask_bart import BartForMultitaskLearning
 from sampler import MultitaskSampler
