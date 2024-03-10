@@ -3,13 +3,16 @@ import warnings
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from transformers.configuration_bart import BartConfig
-from transformers.modeling_bart import (
+from transformers import BartConfig
+from transformers.models.bart.modeling_bart import (
     PretrainedBartModel,
-    _make_linear_from_emb,
-    _reorder_buffer,
     BartClassificationHead,
     BartModel
+)
+
+from transformers.models.fsmt.modeling_fsmt import (
+    _make_linear_from_emb,
+    _reorder_buffer
 )
 
 
@@ -23,9 +26,7 @@ class BartForMultitaskLearning(PretrainedBartModel):
             torch.zeros((1, self.model.shared.num_embeddings))
         )
 
-        self.num_cfemotions = 12
-        self.num_emotions = 6
-        self.num_sentiments = 2
+        self.num_cfemotions = 5
 
         self.cfemotion_head = BartClassificationHead(
             config.d_model,
@@ -35,24 +36,6 @@ class BartForMultitaskLearning(PretrainedBartModel):
         )
         self.model._init_weights(self.cfemotion_head.dense)
         self.model._init_weights(self.cfemotion_head.out_proj)
-
-        self.emotion_head = BartClassificationHead(
-            config.d_model,
-            config.d_model,
-            self.num_emotions,
-            config.classif_dropout
-        )
-        self.model._init_weights(self.emotion_head.dense)
-        self.model._init_weights(self.emotion_head.out_proj)
-
-        self.sentiment_head = BartClassificationHead(
-            config.d_model,
-            config.d_model,
-            self.num_sentiments,
-            config.classif_dropout
-        )
-        self.model._init_weights(self.sentiment_head.dense)
-        self.model._init_weights(self.sentiment_head.out_proj)
 
     def resize_token_embeddings(self, new_num_tokens):
         old_num_tokens = self.model.shared.num_embeddings

@@ -1,6 +1,7 @@
 import torch
 from torch.utils.data import Sampler
-from torch._six import int_classes as _int_classes
+#from torch._six import int_classes as _int_classes
+int_classes = int
 
 
 class MultitaskSampler(Sampler):
